@@ -8,3 +8,14 @@ years deep learning revolutionized several fields of machine learning, including
 computer vision and speech recognition.
 The goal is to predict the gestures based on the data recorded by the MYO Thalmic
 bracelet.
+
+
+
+Data Set Information:
+
+For recording patterns, we used a MYO Thalmic bracelet worn on a userâ€™s forearm, and a PC with a Bluetooth receiver. The bracelet is equipped with eight sensors equally spaced around the forearm that simultaneously acquire myographic signals. The signals are sent through a Bluetooth interface to a PC.
+We present raw EMG data for 36 subjects while they performed series of static hand gestures.The subject performs two series, each of which consists of six (seven) basic gestures. Each gesture was performed for 3 seconds with a pause of 3 seconds between gestures.
+
+Number of Instances is about 40000-50000 recordings in each column (30000 listed as guaranteed)
+
+Source:https://archive.ics.uci.edu/ml/datasets/EMG+data+for+gestures
