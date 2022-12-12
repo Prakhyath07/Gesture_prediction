@@ -1,0 +1,25 @@
+columns:
+  - time: int
+  - channel1: float
+  - channel2: float
+  - channel3: float
+  - channel4: float
+  - channel5: float
+  - channel6: float
+  - channel7: float
+  - channel8: float
+  - class: category
+
+numerical_columns:
+  - time
+  - channel1
+  - channel2
+  - channel3
+  - channel4
+  - channel5
+  - channel6
+  - channel7
+  - channel8
+
+drop_columns:
+  - time

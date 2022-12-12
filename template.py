@@ -17,8 +17,10 @@ logging.info(f"Creating project by name: {project_name}")
 # list of files:
 list_of_files = [
     f"src/{project_name}/__init__.py",
+    f"src/{project_name}/constants/__init__.py",
     f"src/{project_name}/components/__init__.py",
     f"src/{project_name}/configuration/__init__.py",
+    f"src/{project_name}/entity/__init__.py",
     f"src/{project_name}/ml/__init__.py",
     f"src/{project_name}/pipeline/__init__.py",
     f"src/{project_name}/utils/__init__.py",
