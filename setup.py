@@ -5,17 +5,17 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 __version__ = "0.0.0" # update as per your need
 
-REPO_NAME = "<YOUR REPO NAME>"
-AUTHOR_USER_NAME = "<YOUR USERNAME>"
-SRC_REPO = "<YOUR REPO NAME>"
-AUTHOR_EMAIL = "<YOUR EMAIL ID>"
+REPO_NAME = "Gesture_prediction"
+AUTHOR_USER_NAME = "PRAKHYATH BHANDARY"
+SRC_REPO = "gesture_prediction"
+AUTHOR_EMAIL = "prakhyathb07@gmail.com"
 
 setuptools.setup(
     name=SRC_REPO,
     version=__version__,
     author=AUTHOR_USER_NAME,
     author_email=AUTHOR_EMAIL,
-    description="A small python package",
+    description="An application to predict gesture based on sensor data",
     long_description=long_description,
     long_description_content="text/markdown",
     url=f"https://github.com/{AUTHOR_USER_NAME}/{REPO_NAME}",
