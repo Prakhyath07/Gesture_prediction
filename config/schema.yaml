@@ -1,5 +1,4 @@
 columns:
-  - time: int
   - channel1: float
   - channel2: float
   - channel3: float
@@ -11,7 +10,6 @@ columns:
   - class: category
 
 numerical_columns:
-  - time
   - channel1
   - channel2
   - channel3
