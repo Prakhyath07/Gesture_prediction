@@ -1,7 +1,7 @@
 from gesture_prediction.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig,
-DataTransformationConfig,ModelTrainerConfig)
+DataTransformationConfig,ModelTrainerConfig,ModelEvaluationConfig)
 from gesture_prediction.entity.artifact_entity import (DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,
-ModelTrainerArtifact,ClassificationMetricArtifact)
+ModelTrainerArtifact,ModelEvaluationArtifact)
 from gesture_prediction.exception import GestureException
 import sys,os
 from gesture_prediction.logger import logging
@@ -9,6 +9,7 @@ from gesture_prediction.components.data_ingestion import DataIngestion
 from gesture_prediction.components.data_validation import DataValidation
 from gesture_prediction.components.data_transformation import DataTransformation
 from gesture_prediction.components.model_trainer import ModelTrainer
+from gesture_prediction.components.model_evaluation import ModelEvaluation
 from gesture_prediction.constants.training_pipeline import SAVED_MODEL_DIR
 
 
@@ -68,6 +69,21 @@ class TrainPipeline:
         except  Exception as e:
             raise  GestureException(e,sys)
 
+    def start_model_evaluation(self,data_validation_artifact: DataValidationArtifact, 
+                                model_trainer_artifact: ModelTrainerArtifact) ->ModelEvaluationArtifact:
+        try:
+            logging.info("model evaluation started")
+            model_evaluation_config = ModelEvaluationConfig(training_pipeline_config=self.training_pipeline_config)
+            model_eval = ModelEvaluation(model_eval_config=model_evaluation_config,
+                                         model_trainer_artifact=model_trainer_artifact,
+                                         data_validation_artifact=data_validation_artifact
+                                        )
+            model_eval_artifact = model_eval.initiate_model_evaluation()
+            logging.info(f"Model evaluation completed and artifact: {model_eval_artifact}")
+            return model_eval_artifact
+        except  Exception as e:
+            raise  GestureException(e,sys)
+
     def run_pipeline(self):
         try:
             TrainPipeline.is_pipeline_running = True
@@ -76,6 +92,7 @@ class TrainPipeline:
             data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingestion_artifact)
             data_transformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+            model_eval_artifact = self.start_model_evaluation(data_validation_artifact=data_validation_artifact,model_trainer_artifact=model_trainer_artifact)
             logging.info("Training pipeline completed")
             
         except  Exception as e:
