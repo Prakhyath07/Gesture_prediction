@@ -1,10 +1,12 @@
-from gesture_prediction.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig)
-from gesture_prediction.entity.artifact_entity import (DataIngestionArtifact,DataValidationArtifact)
+from gesture_prediction.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig,
+DataTransformationConfig)
+from gesture_prediction.entity.artifact_entity import (DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact)
 from gesture_prediction.exception import GestureException
 import sys,os
 from gesture_prediction.logger import logging
 from gesture_prediction.components.data_ingestion import DataIngestion
 from gesture_prediction.components.data_validation import DataValidation
+from gesture_prediction.components.data_transformation import DataTransformation
 from gesture_prediction.constants.training_pipeline import SAVED_MODEL_DIR
 
 
@@ -40,6 +42,18 @@ class TrainPipeline:
         except  Exception as e:
             raise  GestureException(e,sys)
 
+    def start_data_transformation(self,data_validation_artifact:DataValidationArtifact) ->DataTransformationArtifact:
+        try:
+            logging.info("Starting data transformation")
+            data_transformation_config = DataTransformationConfig(training_pipeline_config=self.training_pipeline_config)
+            data_transformation = DataTransformation(data_validation_artifact=data_validation_artifact,
+            data_transformation_config=data_transformation_config
+            )
+            data_transformation_artifact =  data_transformation.initiate_data_transformation()
+            logging.info(f"Data transformation completed and artifact: {data_transformation_artifact}")
+            return data_transformation_artifact
+        except  Exception as e:
+            raise  GestureException(e,sys)
 
     def run_pipeline(self):
         try:
@@ -47,6 +61,7 @@ class TrainPipeline:
             logging.info("Starting training pipeline")
             data_ingestion_artifact:DataIngestionArtifact = self.start_data_ingestion()
             data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingestion_artifact)
+            data_transformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
             logging.info("Training pipeline completed")
             
         except  Exception as e:

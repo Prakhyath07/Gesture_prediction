@@ -3,6 +3,9 @@ pandas
 dill
 scikit-learn
 pymongo
+xgboost
+imblearn
+
 
 # dev requirements -
 pytest==7.1.3
