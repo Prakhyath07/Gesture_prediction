@@ -17,7 +17,7 @@ from gesture_prediction.entity.config_entity import DataTransformationConfig
 from gesture_prediction.exception import GestureException
 from gesture_prediction.logger import logging
 from gesture_prediction.utils.main_utils import save_numpy_array_data, save_object
-
+from gesture_prediction.ml.model.estimator import TargetValueMapping
 
 
 
@@ -74,12 +74,12 @@ class DataTransformation:
             #training dataframe
             input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN], axis=1)
             target_feature_train_df = train_df[TARGET_COLUMN]
-            # target_feature_train_df = target_feature_train_df.replace( TargetValueMapping().to_dict())
+            target_feature_train_df = target_feature_train_df.replace( TargetValueMapping().mapping)
 
             #testing dataframe
             input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN], axis=1)
             target_feature_test_df = test_df[TARGET_COLUMN]
-            # target_feature_test_df = target_feature_test_df.replace(TargetValueMapping().to_dict())
+            target_feature_test_df = target_feature_test_df.replace(TargetValueMapping().mapping)
             logging.info("fitting transformer object to train dataset")
             preprocessor_object = preprocessor.fit(input_feature_train_df)
             logging.info("transforming train dataset")
