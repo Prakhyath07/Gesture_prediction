@@ -8,6 +8,7 @@ imblearn
 fastapi
 uvicorn
 python-multipart
+cassandra-driver
 
 # dev requirements -
 pytest==7.1.3

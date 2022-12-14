@@ -47,7 +47,7 @@ class ModelTrainerArtifact:
     def _asdict(self):
         try:
             response = dict()
-            response['model_trainer_ref_artifact'] = self.trained_model_file_path
+            response['trained_model_file_path'] = self.trained_model_file_path
             response['model_trainer_train_metric_artifact'] = self.train_metric_artifact.to_dict()
             response['model_trainer_test_metric_artifact'] = self.test_metric_artifact.to_dict()
             return response
@@ -64,7 +64,17 @@ class ModelEvaluationArtifact:
     best_model_metric_artifact: ClassificationMetricArtifact
 
     def to_dict(self):
-        return self.__dict__
+        try:
+            response = dict()
+            response['is_model_accepted'] = self.is_model_accepted
+            response['improved_accuracy'] = self.improved_accuracy
+            response['best_model_path'] = self.best_model_path
+            response['trained_model_path'] = self.trained_model_path
+            response['model_evaluation_train_model_metric_artifact'] = self.train_model_metric_artifact.to_dict()
+            response['model_evaluation_best_model_metric_artifact'] = self.best_model_metric_artifact.to_dict()
+            return response
+        except Exception as e:
+            raise e
 
 @dataclass
 class ModelPusherArtifact:
