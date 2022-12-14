@@ -1,7 +1,7 @@
 from gesture_prediction.entity.config_entity import (TrainingPipelineConfig,DataIngestionConfig,DataValidationConfig,
-DataTransformationConfig,ModelTrainerConfig,ModelEvaluationConfig)
+DataTransformationConfig,ModelTrainerConfig,ModelEvaluationConfig,ModelPusherConfig)
 from gesture_prediction.entity.artifact_entity import (DataIngestionArtifact,DataValidationArtifact,DataTransformationArtifact,
-ModelTrainerArtifact,ModelEvaluationArtifact)
+ModelTrainerArtifact,ModelEvaluationArtifact,ModelPusherArtifact)
 from gesture_prediction.exception import GestureException
 import sys,os
 from gesture_prediction.logger import logging
@@ -10,6 +10,7 @@ from gesture_prediction.components.data_validation import DataValidation
 from gesture_prediction.components.data_transformation import DataTransformation
 from gesture_prediction.components.model_trainer import ModelTrainer
 from gesture_prediction.components.model_evaluation import ModelEvaluation
+from gesture_prediction.components.model_pusher import ModelPusher
 from gesture_prediction.constants.training_pipeline import SAVED_MODEL_DIR
 
 
@@ -83,6 +84,20 @@ class TrainPipeline:
             return model_eval_artifact
         except  Exception as e:
             raise  GestureException(e,sys)
+    
+    def start_model_pusher(self, model_eval_artifact: ModelEvaluationArtifact) ->ModelPusherArtifact:
+        try:
+            logging.info("model pusher stage started")
+            model_pusher_config = ModelPusherConfig(training_pipeline_config=self.training_pipeline_config)
+            model_pusher = ModelPusher(model_pusher_config=model_pusher_config,
+                                    model_eval_artifact=model_eval_artifact
+                                    )
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            logging.info(f"Model pusher stage completed and artifact: {model_pusher_artifact}")
+            return model_pusher_artifact
+
+        except  Exception as e:
+            raise  GestureException(e,sys)
 
     def run_pipeline(self):
         try:
@@ -93,6 +108,11 @@ class TrainPipeline:
             data_transformation_artifact = self.start_data_transformation(data_validation_artifact=data_validation_artifact)
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
             model_eval_artifact = self.start_model_evaluation(data_validation_artifact=data_validation_artifact,model_trainer_artifact=model_trainer_artifact)
+            if not model_eval_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
+            
+            model_pusher_artifact = self.start_model_pusher(model_eval_artifact=model_eval_artifact)
+            TrainPipeline.is_pipeline_running = False
             logging.info("Training pipeline completed")
             
         except  Exception as e:
