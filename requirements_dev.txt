@@ -5,7 +5,9 @@ scikit-learn
 pymongo
 xgboost
 imblearn
-
+fastapi
+uvicorn
+python-multipart
 
 # dev requirements -
 pytest==7.1.3

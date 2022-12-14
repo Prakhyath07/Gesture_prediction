@@ -132,3 +132,5 @@ dmypy.json
 *.log
 artifact/
 saved_models/
+prediction_artifact/
+predict.csv
