@@ -5,6 +5,9 @@ class DataIngestionArtifact:
     trained_file_path: str
     test_file_path: str
 
+    def to_dict(self):
+        return self.__dict__
+
 @dataclass
 class DataValidationArtifact:
     validation_status: bool
@@ -14,11 +17,17 @@ class DataValidationArtifact:
     invalid_test_file_path: str
     drift_report_file_path: str
 
+    def to_dict(self):
+        return self.__dict__
+
 @dataclass
 class DataTransformationArtifact:
     transformed_object_file_path: str
     transformed_train_file_path: str
     transformed_test_file_path: str
+
+    def to_dict(self):
+        return self.__dict__
 
 @dataclass
 class ClassificationMetricArtifact:
@@ -26,12 +35,24 @@ class ClassificationMetricArtifact:
     precision_score: float
     recall_score: float
 
+    def to_dict(self):
+        return self.__dict__
+
 @dataclass
 class ModelTrainerArtifact:
     trained_model_file_path: str
     train_metric_artifact: ClassificationMetricArtifact
     test_metric_artifact: ClassificationMetricArtifact
 
+    def _asdict(self):
+        try:
+            response = dict()
+            response['model_trainer_ref_artifact'] = self.trained_model_file_path
+            response['model_trainer_train_metric_artifact'] = self.train_metric_artifact.to_dict()
+            response['model_trainer_test_metric_artifact'] = self.test_metric_artifact.to_dict()
+            return response
+        except Exception as e:
+            raise e
 
 @dataclass
 class ModelEvaluationArtifact:
@@ -42,13 +63,22 @@ class ModelEvaluationArtifact:
     train_model_metric_artifact: ClassificationMetricArtifact
     best_model_metric_artifact: ClassificationMetricArtifact
 
+    def to_dict(self):
+        return self.__dict__
+
 @dataclass
 class ModelPusherArtifact:
     saved_model_path:str
     model_file_path:str
+
+    def to_dict(self):
+        return self.__dict__
 
 
 @dataclass
 class PredictionArtifact:
     input_file_path: str
     prediction_file_path: str
+
+    def to_dict(self):
+        return self.__dict__

@@ -6,7 +6,7 @@ from gesture_prediction.entity.config_entity import ModelEvaluationConfig,ModelP
 import os,sys
 from gesture_prediction.ml.metric.classification_metric import get_classification_score
 from gesture_prediction.utils.main_utils import save_object,load_object,write_yaml_file
-
+from gesture_prediction.data_access.model_pusher_artifact import ModelPusherArtifactData
 import shutil
 
 class ModelPusher:
@@ -18,6 +18,7 @@ class ModelPusher:
         try:
             self.model_pusher_config = model_pusher_config
             self.model_eval_artifact = model_eval_artifact
+            self.model_pusher_artifact_data = ModelPusherArtifactData()
         except  Exception as e:
             raise GestureException(e, sys)
     
@@ -40,6 +41,8 @@ class ModelPusher:
 
             #prepare artifact
             model_pusher_artifact = ModelPusherArtifact(saved_model_path=saved_model_path, model_file_path=model_file_path)
+            logging.info("saving model pusher artifact to database")
+            self.model_pusher_artifact_data.save_pusher_artifact_artifact(model_pusher_artifact=model_pusher_artifact)
             return model_pusher_artifact
         except  Exception as e:
             raise GestureException(e, sys)

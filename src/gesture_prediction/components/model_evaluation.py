@@ -11,6 +11,7 @@ from gesture_prediction.ml.model.estimator import ModelResolver
 from gesture_prediction.constants.training_pipeline import TARGET_COLUMN
 from gesture_prediction.ml.model.estimator import TargetValueMapping
 import pandas  as  pd
+from gesture_prediction.data_access.model_eval_artifact import ModelEvaluationArtifactData
 
 
 class ModelEvaluation:
@@ -24,6 +25,7 @@ class ModelEvaluation:
             self.model_eval_config=model_eval_config
             self.data_validation_artifact=data_validation_artifact
             self.model_trainer_artifact=model_trainer_artifact
+            self.model_eval_artifact_data = ModelEvaluationArtifactData()
         except Exception as e:
             raise GestureException(e,sys)
     
@@ -100,7 +102,8 @@ class ModelEvaluation:
 
             #save the report
             write_yaml_file(self.model_eval_config.report_file_path, model_eval_report)
-            
+            logging.info("saving model evaluation artifact to database")
+            self.model_eval_artifact_data.save_eval_artifact(model_eval_artifact=model_evaluation_artifact)
             return model_evaluation_artifact
             
         except Exception as e:

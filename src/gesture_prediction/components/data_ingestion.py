@@ -8,6 +8,7 @@ from pandas import DataFrame
 from gesture_prediction.data_access.sensor_data import GestureData
 from gesture_prediction.utils.main_utils import read_yaml_file
 from gesture_prediction.constants.training_pipeline import SCHEMA_FILE_PATH
+from gesture_prediction.data_access.data_ingestion_artifact import DataIngestionArtifactData
 
 class DataIngestion:
 
@@ -16,6 +17,7 @@ class DataIngestion:
             
             self.data_ingestion_config=data_ingestion_config
             self._schema_config = read_yaml_file(SCHEMA_FILE_PATH)
+            self.data_ingestion_artifact_data = DataIngestionArtifactData()
         except Exception as e:
             raise GestureException(e,sys)
 
@@ -81,6 +83,8 @@ class DataIngestion:
             self.split_data_as_train_test(dataframe=dataframe)
             data_ingestion_artifact = DataIngestionArtifact(trained_file_path=self.data_ingestion_config.training_file_path,
             test_file_path=self.data_ingestion_config.testing_file_path)
+            logging.info("saving data ingestion artifact to database")
+            self.data_ingestion_artifact_data.save_ingestion_artifact(data_ingestion_artifact=data_ingestion_artifact)
             return data_ingestion_artifact
         except Exception as e:
             raise GestureException(e,sys)

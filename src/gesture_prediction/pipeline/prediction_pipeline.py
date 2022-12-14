@@ -12,6 +12,7 @@ from gesture_prediction.utils.main_utils import read_yaml_file
 from gesture_prediction.constants.training_pipeline import SAVED_MODEL_DIR
 from gesture_prediction.ml.model.estimator import ModelResolver,TargetValueMapping
 from gesture_prediction.utils.main_utils import load_object
+from gesture_prediction.data_access.prediction_artifact import PredictionArtifactData
 
 
 class PredictPipeline:
@@ -19,6 +20,7 @@ class PredictPipeline:
         self.prediction_pipeline_config = PredictionPipelineConfig()
         self.schema_config = read_yaml_file(SCHEMA_FILE_PATH)
         self.input_data = input_data
+        self.prediction_artifact_data = PredictionArtifactData()
         # self.s3_sync = S3Sync()
         
 
@@ -77,10 +79,11 @@ class PredictPipeline:
                 prediction_file_path= self.prediction_pipeline_config.pred_file_path
 
             )
-            
+            logging.info("saving prediction artifact to database")
+            self.prediction_artifact_data.save_prediction_artifact(prediction_artifact=pred_artifact)
             # self.sync_artifact_dir_to_s3()
             
-            
+            logging.info(f"prediction completed and artifact: {pred_artifact}")
 
             return pred_artifact
 

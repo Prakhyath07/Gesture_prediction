@@ -8,6 +8,7 @@ from scipy.stats import ks_2samp
 import pandas as pd
 import os,sys
 from typing import List
+from gesture_prediction.data_access.data_validation_artifact import DataValidationArtifactData
 
 class DataValidation:
 
@@ -17,6 +18,7 @@ class DataValidation:
             self.data_ingestion_artifact=data_ingestion_artifact
             self.data_validation_config=data_validation_config
             self._schema_config = read_yaml_file(SCHEMA_FILE_PATH)
+            self.data_validation_artifact_data = DataValidationArtifactData()
         except Exception as e:
             raise  GestureException(e,sys)
     
@@ -145,8 +147,8 @@ class DataValidation:
                 drift_report_file_path=self.data_validation_config.drift_report_file_path,
             )
 
-            
-
+            logging.info("saving data validation artifact to database")
+            self.data_validation_artifact_data.save_validation_artifact(data_validation_artifact=data_validation_artifact)
             return data_validation_artifact
         except Exception as e:
             raise GestureException(e,sys)

@@ -9,6 +9,8 @@ from xgboost import XGBClassifier
 from gesture_prediction.ml.metric.classification_metric import get_classification_score
 from gesture_prediction.ml.model.estimator import GestureModel
 from gesture_prediction.utils.main_utils import save_object,load_object
+from gesture_prediction.data_access.model_trainer_artifact import ModelTrainerArtifactData
+
 class ModelTrainer:
 
     def __init__(self,model_trainer_config:ModelTrainerConfig,
@@ -16,6 +18,8 @@ class ModelTrainer:
         try:
             self.model_trainer_config=model_trainer_config
             self.data_transformation_artifact=data_transformation_artifact
+            self.model_trainer_artifact_data = ModelTrainerArtifactData()
+
         except Exception as e:
             raise GestureException(e,sys)
 
@@ -78,7 +82,8 @@ class ModelTrainer:
             model_trainer_artifact = ModelTrainerArtifact(trained_model_file_path=self.model_trainer_config.trained_model_file_path, 
             train_metric_artifact=classification_train_metric,
             test_metric_artifact=classification_test_metric)
-            
+            logging.info("saving model trainer artifact to database")
+            self.model_trainer_artifact_data.save_trainer_artifact(model_trainer_artifact=model_trainer_artifact)
             return model_trainer_artifact
         except Exception as e:
             raise GestureException(e,sys)

@@ -18,6 +18,7 @@ from gesture_prediction.exception import GestureException
 from gesture_prediction.logger import logging
 from gesture_prediction.utils.main_utils import save_numpy_array_data, save_object
 from gesture_prediction.ml.model.estimator import TargetValueMapping
+from gesture_prediction.data_access.data_transformation_artifact import DataTransformationArtifactData
 
 
 
@@ -32,6 +33,7 @@ class DataTransformation:
         try:
             self.data_validation_artifact = data_validation_artifact
             self.data_transformation_config = data_transformation_config
+            self.data_transformation_artifact_data = DataTransformationArtifactData()
 
         except Exception as e:
             raise GestureException(e, sys)
@@ -115,7 +117,8 @@ class DataTransformation:
                 transformed_train_file_path=self.data_transformation_config.transformed_train_file_path,
                 transformed_test_file_path=self.data_transformation_config.transformed_test_file_path,
             )
-            
+            logging.info("saving data transformation artifact to database")
+            self.data_transformation_artifact_data.save_transformation_artifact(data_transformation_artifact=data_transformation_artifact)
             return data_transformation_artifact
         except Exception as e:
             raise GestureException(e, sys) from e
