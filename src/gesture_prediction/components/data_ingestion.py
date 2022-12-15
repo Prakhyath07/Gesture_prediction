@@ -5,7 +5,7 @@ from gesture_prediction.entity.artifact_entity import DataIngestionArtifact
 from sklearn.model_selection import train_test_split
 import os,sys
 from pandas import DataFrame
-from gesture_prediction.data_access.sensor_data import GestureData
+from gesture_prediction.data_access.sensor_data import GestureData,GestureDataCassandra
 from gesture_prediction.utils.main_utils import read_yaml_file
 from gesture_prediction.constants.training_pipeline import SCHEMA_FILE_PATH
 from gesture_prediction.data_access.data_ingestion_artifact import DataIngestionArtifactData
@@ -27,7 +27,7 @@ class DataIngestion:
         """
         try:
             logging.info("Exporting data from mongodb to feature store")
-            Gesture_data = GestureData()
+            Gesture_data = GestureDataCassandra()
             dataframe = Gesture_data.export_collection_as_dataframe(collection_name=self.data_ingestion_config.collection_name)
             feature_store_file_path = self.data_ingestion_config.feature_store_file_path            
 

@@ -1,6 +1,7 @@
 
 from gesture_prediction.configuration.mongodb_connection import MongoDBClient
 from gesture_prediction.entity.artifact_entity import DataIngestionArtifact
+from gesture_prediction.configuration.Cassandra_connection import CassandraSession
 
 
 class DataIngestionArtifactData:
@@ -27,3 +28,14 @@ class DataIngestionArtifactData:
 
     def get_ingestion_artifacts(self, query):
         self.collection.find(query)
+
+class DataIngestionArtifactDataCassandra:
+
+    def __init__(self):
+        self.cassandra_sess = CassandraSession().session
+        self.collection_name = "data_ingestion_artifact"
+        
+
+    def save_ingestion_artifact(self, data_ingestion_artifact: DataIngestionArtifact):
+        self.cassandra_sess.execute(f"CREATE TABLE IF NOT EXISTS {self.collection_name}tuple([i for i in dir(data_ingestion_artifact) if not i.startswith('_')])")
+        self.cassandra_sess.execute(f"select * from {self.collection_name}")
