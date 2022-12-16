@@ -7,7 +7,7 @@ columns:
   - channel6: float
   - channel7: float
   - channel8: float
-  - class: category
+  - classes: category
 
 numerical_columns:
   - channel1

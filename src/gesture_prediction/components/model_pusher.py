@@ -42,7 +42,7 @@ class ModelPusher:
             #prepare artifact
             model_pusher_artifact = ModelPusherArtifact(saved_model_path=saved_model_path, model_file_path=model_file_path)
             logging.info("saving model pusher artifact to database")
-            self.model_pusher_artifact_data.save_pusher_artifact_artifact(model_pusher_artifact=model_pusher_artifact)
+            self.model_pusher_artifact_data.save_pusher_artifact(model_pusher_artifact=model_pusher_artifact)
             return model_pusher_artifact
         except  Exception as e:
             raise GestureException(e, sys)

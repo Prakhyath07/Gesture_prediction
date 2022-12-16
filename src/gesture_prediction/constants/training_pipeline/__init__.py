@@ -4,7 +4,7 @@ import os
 SAVED_MODEL_DIR = os.path.join("saved_models")
 
 # defining common constant variable for training pipeline
-TARGET_COLUMN = "class"
+TARGET_COLUMN = "classes"
 PIPELINE_NAME: str = "gesture_prediction"
 ARTIFACT_DIR: str = "artifact"
 FILE_NAME: str = "gesture.csv"
