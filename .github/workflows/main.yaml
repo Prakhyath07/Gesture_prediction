@@ -47,19 +47,16 @@ jobs:
 
       - uses: 'docker/login-action@v1'
         with:
-          registry: 'asia-south1-docker.pkg.dev' # or REGION-docker.pkg.dev
+          GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
+          registry: '$GOOGLE_COMPUTE_ZONE-docker.pkg.dev'
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
 
       - name: Build, tag, and push image to google artifact registry
         id: build-image
         env:
-          # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          registry: 'gcr.io'
-          GOOGLE_COMPUTE_ZONE: asia-south1
-          GOOGLE_PROJECT_ID : gesture-prediction
-          GAR_REPOSITORY: gesture-prediciton
-          # GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
+          GOOGLE_PROJECT_ID : ${{ secrets.GOOGLE_PROJECT_ID }}
+          GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
           IMAGE_NAME : gesture-prediction
           IMAGE_TAG: latest
         run: |
@@ -85,9 +82,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION_NAME }}
 
-      - name: Authenticate to Google Cloud
-        id: 'auth'
-      
+      - name: Authenticate to Google Cloud 
+        id: auth
         uses: google-github-actions/auth@v1
         with:
           token_format: 'access_token'
@@ -95,18 +91,20 @@ jobs:
 
       - uses: 'docker/login-action@v1'
         with:
-          registry: 'gcr.io' # or REGION-docker.pkg.dev
+          GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
+          registry: '$GOOGLE_COMPUTE_ZONE-docker.pkg.dev'
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
-      
-      
-      - name: Pull latest images
+
+      - name: Build, tag, and push image to google artifact registry
+        id: build-image
         env:
-          # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          GOOGLE_PROJECT_ID : ${{ secrets.GOOGLE_PROJECT_ID }}
           GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
+          IMAGE_NAME : gesture-prediction
           IMAGE_TAG: latest
         run: |
-         docker pull $registry/$GAR_REPOSITORY:$IMAGE_TAG
+         docker pull $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
       # - name: Stop and remove sensor container if running
       #   run: |
