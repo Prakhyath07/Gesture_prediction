@@ -56,7 +56,7 @@ jobs:
         env:
           # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           registry: 'gcr.io'
-          GOOGLE_COMPUTE_ZONE: asia-south1-c
+          GOOGLE_COMPUTE_ZONE: asia-south1
           GOOGLE_PROJECT_ID : gesture-prediction
           GAR_REPOSITORY: gesture-prediciton
           # GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
