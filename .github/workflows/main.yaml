@@ -114,7 +114,15 @@ jobs:
        
       - name: Run Docker Image to serve users
         run: |
-         docker run -d -p 80:8080 --name=gesture -e 'CASSANDRA_CLIENT_ID=${{ secrets.CASSANDRA_CLIENT_ID }}' -e 'CASSANDRA_CLIENT_SECRET=${{ secrets.CASSANDRA_CLIENT_SECRET }}' -e 'ASTRA_DB_SECURE_BUNDLE_PATH=${{ secrets.ASTRA_DB_SECURE_BUNDLE_PATH }}' -e 'MONGO_DB_URL=${{ secrets.MONGO_DB_URL }}' -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+         docker run --name=gesture \
+         -e 'CASSANDRA_CLIENT_ID=${{ secrets.CASSANDRA_CLIENT_ID }}' \
+         -e 'CASSANDRA_CLIENT_SECRET=${{ secrets.CASSANDRA_CLIENT_SECRET }}' \
+         -e 'ASTRA_DB_SECURE_BUNDLE_PATH=${{ secrets.ASTRA_DB_SECURE_BUNDLE_PATH }}' \
+         -e 'MONGO_DB_URL=${{ secrets.MONGO_DB_URL }}' \
+         -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' \
+         -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' \
+         -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  \
+         -d -p 80:8080 $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/$GOOGLE_PROJECT_ID/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
 
       - name: Clean previous images and containers
         run: |
