@@ -32,13 +32,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-
+        
       - name: Install Utilities
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
-      - id: 'auth'
-      - name: Authenticate to Google Cloud
+
+      - name: Authenticate to Google Cloud 
+        id: auth
         uses: google-github-actions/auth@v1
         with:
           token_format: 'access_token'
@@ -79,8 +80,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION_NAME }}
 
-      - id: 'auth'
       - name: Authenticate to Google Cloud
+        id: 'auth'
+      
         uses: google-github-actions/auth@v1
         with:
           token_format: 'access_token'
