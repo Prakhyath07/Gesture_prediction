@@ -1,3 +1,14 @@
-ipywidgets==8.0.2
-notebook==6.4.12
-ensure==1.0.2
+pandas
+dill
+scikit-learn
+pymongo
+xgboost
+imblearn
+fastapi
+uvicorn
+python-multipart
+cassandra-driver
+python-dotenv
+PyYAML
+certifi
+-e .

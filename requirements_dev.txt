@@ -9,6 +9,10 @@ fastapi
 uvicorn
 python-multipart
 cassandra-driver
+python-dotenv
+PyYAML
+certifi
+-e .
 
 # dev requirements -
 pytest==7.1.3
@@ -20,5 +24,3 @@ notebook
 matplotlib
 mpl-tools
 seaborn
-python-dotenv
--e .

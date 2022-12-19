@@ -134,3 +134,6 @@ artifact/
 saved_models/
 prediction_artifact/
 predict.csv
+tests
+data_to_cassandra.py
+data_to_mongodb.py

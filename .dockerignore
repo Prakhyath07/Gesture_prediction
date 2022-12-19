@@ -1,0 +1,14 @@
+artifact
+prediction_artifact
+saved_models
+venv
+docs
+flowcharts
+notebook
+.git
+predict.csv
+trial.ipynb
+logs
+tests
+data_to_cassandra
+data_to_mongodb

@@ -3,7 +3,7 @@ from gesture_prediction.entity.artifact_entity import PredictionArtifact
 from gesture_prediction.exception import GestureException
 import sys,os
 from gesture_prediction.logger import logging
-
+from gesture_prediction.cloud_storage.s3_syncer import S3Sync
 
 from io import BytesIO
 import pandas as pd
@@ -13,7 +13,7 @@ from gesture_prediction.constants.training_pipeline import SAVED_MODEL_DIR
 from gesture_prediction.ml.model.estimator import ModelResolver,TargetValueMapping
 from gesture_prediction.utils.main_utils import load_object
 from gesture_prediction.data_access.prediction_artifact import PredictionArtifactData
-
+from gesture_prediction.constants.s3_bucket import PREDICTION_BUCKET_NAME
 
 class PredictPipeline:
     def __init__(self,input_data):
@@ -21,7 +21,7 @@ class PredictPipeline:
         self.schema_config = read_yaml_file(SCHEMA_FILE_PATH)
         self.input_data = input_data
         self.prediction_artifact_data = PredictionArtifactData()
-        # self.s3_sync = S3Sync()
+        self.s3_sync = S3Sync()
         
 
 
@@ -59,6 +59,13 @@ class PredictPipeline:
 
         return pred_df
 
+    def sync_artifact_dir_to_s3(self):
+        try:
+            aws_bucket_url = f"s3://{PREDICTION_BUCKET_NAME}/artifact/{self.prediction_pipeline_config.timestamp}"
+            self.s3_sync.sync_folder_to_s3(folder = self.prediction_pipeline_config.artifact_dir,aws_bucket_url=aws_bucket_url)
+        except Exception as e:
+            raise GestureException(e,sys)
+
     
             
 
@@ -81,12 +88,12 @@ class PredictPipeline:
             )
             logging.info("saving prediction artifact to database")
             self.prediction_artifact_data.save_prediction_artifact(prediction_artifact=pred_artifact)
-            # self.sync_artifact_dir_to_s3()
+            self.sync_artifact_dir_to_s3()
             
             logging.info(f"prediction completed and artifact: {pred_artifact}")
 
             return pred_artifact
 
         except  Exception as e:
-            # self.sync_artifact_dir_to_s3()
+            self.sync_artifact_dir_to_s3()
             raise  GestureException(e,sys)
