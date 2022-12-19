@@ -44,12 +44,12 @@ jobs:
         with:
           token_format: 'access_token'
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
-        env:
-          GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
+        
 
       - uses: 'docker/login-action@v1'
-        with:
+        env:
           GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
+        with:
           registry: '$GOOGLE_COMPUTE_ZONE-docker.pkg.dev'
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.access_token }}'
@@ -90,10 +90,11 @@ jobs:
         with:
           token_format: 'access_token'
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
-        env:
-          GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
+        
 
       - uses: 'docker/login-action@v1'
+        env:
+          GOOGLE_COMPUTE_ZONE: ${{secrets.GOOGLE_COMPUTE_ZONE}}
         with:
           registry: '$GOOGLE_COMPUTE_ZONE-docker.pkg.dev'
           username: 'oauth2accesstoken'
