@@ -57,14 +57,15 @@ jobs:
           # ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           registry: 'gcr.io'
           GAR_REPOSITORY: ${{ secrets.GAR_REPOSITORY }}
+          IMAGE_NAME : gesture-prediction
           IMAGE_TAG: latest
         run: |
           # Build a docker container and
           # push it to GAR so that it can
           # be deployed to GAR.
-          docker build -t $registry/$GAR_REPOSITORY:$IMAGE_TAG .
-          docker push $registry/$GAR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$registry/$GAR_REPOSITORY:$IMAGE_TAG"
+          docker build -t $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG .
+          docker push $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
+          echo "::set-output name=image::$GOOGLE_COMPUTE_ZONE-docker.pkg.dev/${GOOGLE_PROJECT_ID}/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG"
           
           
   Continuous-Deployment:
