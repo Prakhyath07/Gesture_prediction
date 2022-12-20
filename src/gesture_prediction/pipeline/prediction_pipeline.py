@@ -16,8 +16,8 @@ from gesture_prediction.data_access.prediction_artifact import PredictionArtifac
 from gesture_prediction.constants.s3_bucket import PREDICTION_BUCKET_NAME
 
 class PredictPipeline:
-    def __init__(self,input_data):
-        self.prediction_pipeline_config = PredictionPipelineConfig()
+    def __init__(self,input_data,time):
+        self.prediction_pipeline_config = PredictionPipelineConfig(timestamp=time)
         self.schema_config = read_yaml_file(SCHEMA_FILE_PATH)
         self.input_data = input_data
         self.prediction_artifact_data = PredictionArtifactData()

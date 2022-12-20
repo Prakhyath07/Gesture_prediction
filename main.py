@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import pandas as pd
+from datetime import datetime
 
 app = FastAPI()
 origins = ["*"]
@@ -38,7 +39,7 @@ async def index():
 async def train_route():
     try:
 
-        train_pipeline = TrainPipeline()
+        train_pipeline = TrainPipeline(time=datetime.now())
         if TrainPipeline.is_pipeline_running:
             return Response("Training pipeline is already running.")
         train_pipeline.run_pipeline()
@@ -57,7 +58,7 @@ async def predict_route(file: UploadFile):
         #get data from user csv file
         #conver csv file to dataframe
         cont =await file.read()
-        predictpipeline =PredictPipeline(cont)
+        predictpipeline =PredictPipeline(cont,time=datetime.now())
         #decide how to return file to user.
         pred_artifact = predictpipeline.run_pipeline()
         df = pd.read_csv(pred_artifact.prediction_file_path)
