@@ -96,6 +96,10 @@ jobs:
           registry: ${{secrets.GOOGLE_COMPUTE_ZONE}}-docker.pkg.dev
           username: 'oauth2accesstoken'
           password: '${{steps.auth.outputs.access_token}}'
+        
+      - name: Clean previous images and containers
+        run: |
+         docker system prune -f
 
       - name: pull and run image to google artifact registry
         id: build-image
@@ -124,7 +128,5 @@ jobs:
          -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  \
          -d -p 80:8080 gesture_prediction
 
-      - name: Clean previous images and containers
-        run: |
-         docker system prune -f
+      
         
