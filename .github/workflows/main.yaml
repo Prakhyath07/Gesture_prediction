@@ -112,9 +112,9 @@ jobs:
         run: |
          docker pull $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/$GOOGLE_PROJECT_ID/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG
          docker tag $GOOGLE_COMPUTE_ZONE-docker.pkg.dev/$GOOGLE_PROJECT_ID/$GAR_REPOSITORY/$IMAGE_NAME:$IMAGE_TAG gesture_prediction
-      # - name: Stop and remove sensor container if running
-      #   run: |
-      #    docker ps -q --filter "name=sensor" | grep -q . && docker stop sensor && docker rm -fv sensor
+      - name: Stop and remove sensor container if running
+        run: |
+         docker ps -q --filter "name=gesture" | grep -q . && docker stop sensor && docker rm -fv sensor
        
       - name: Run Docker Image to serve users
         run: |
