@@ -6,6 +6,7 @@ from gesture_prediction.entity.artifact_entity import DataTransformationArtifact
 from gesture_prediction.entity.config_entity import ModelTrainerConfig
 import os,sys
 from xgboost import XGBClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from gesture_prediction.ml.metric.classification_metric import get_classification_score
 from gesture_prediction.ml.model.estimator import GestureModel
 from gesture_prediction.utils.main_utils import save_object,load_object
@@ -32,6 +33,14 @@ class ModelTrainer:
             xgb_clf = XGBClassifier()
             xgb_clf.fit(x_train,y_train)
             return xgb_clf
+            # logging.info("fitting data to randomforest classifier")
+            # rf_clf = RandomForestClassifier(class_weight='balanced', max_depth=7)
+            # rf_clf.fit(x_train,y_train)
+            # return rf_clf
+            # logging.info("fitting data to extra tree classifier")
+            # et_clf = ExtraTreesClassifier(7)
+            # et_clf.fit(x_train,y_train)
+            # return et_clf
         except Exception as e:
             raise e
     
