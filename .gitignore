@@ -137,3 +137,5 @@ predict.csv
 tests
 data_to_cassandra.py
 data_to_mongodb.py
+notebook/EDA.ipynb
+notebook/EDA.ipynb
