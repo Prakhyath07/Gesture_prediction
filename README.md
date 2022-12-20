@@ -19,3 +19,16 @@ We present raw EMG data for 36 subjects while they performed series of static ha
 Number of Instances is about 40000-50000 recordings in each column (30000 listed as guaranteed)
 
 Source:https://archive.ics.uci.edu/ml/datasets/EMG+data+for+gestures
+
+
+## Tech Stack Used
+
+1. Python 
+2. FastAPI 
+3. Machine learning algorithms
+4. Docker
+5. MongoDB
+6. GitHub Actions
+7. Cassandra
+8. GCP VM and artifact registry
+9. AWS S3
