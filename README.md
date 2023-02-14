@@ -1,4 +1,5 @@
-# Gesture Prediction using Machine Learning
+# Gesture Prediction using Machine Learning  
+deployed in GCP : http://35.200.193.216/
 
 Natural control methods based on surface electromyography (sEMG) and pattern
 recognition are promising for hand prosthetics. However, the control robustness offered
