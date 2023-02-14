@@ -24,7 +24,7 @@ class ModelTrainer:
         except Exception as e:
             raise GestureException(e,sys)
 
-    def perform_hyper_paramter_tunig(self):...
+    
     
 
     def train_model(self,x_train,y_train):

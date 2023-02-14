@@ -39,7 +39,7 @@ async def index():
 async def train_route():
     try:
 
-        train_pipeline = TrainPipeline(time=datetime.now())
+        train_pipeline = TrainPipeline()
         if TrainPipeline.is_pipeline_running:
             return Response("Training pipeline is already running.")
         train_pipeline.run_pipeline()

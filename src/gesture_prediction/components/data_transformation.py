@@ -89,7 +89,7 @@ class DataTransformation:
             logging.info("transforming test dataset")
             transformed_input_test_feature =preprocessor_object.transform(input_feature_test_df)
 
-            smt = SMOTETomek(sampling_strategy="auto")
+            smt = SMOTETomek(sampling_strategy="minority")
             logging.info("oversampling train data")
             input_feature_train_final, target_feature_train_final = smt.fit_resample(
                 transformed_input_train_feature, target_feature_train_df

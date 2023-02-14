@@ -18,8 +18,8 @@ from gesture_prediction.constants.s3_bucket import TRAINING_BUCKET_NAME
 
 class TrainPipeline:
     is_pipeline_running = False
-    def __init__(self,time):
-        self.training_pipeline_config = TrainingPipelineConfig(timestamp=time)
+    def __init__(self):
+        self.training_pipeline_config = TrainingPipelineConfig()
         self.s3_sync = S3Sync()
         
 
